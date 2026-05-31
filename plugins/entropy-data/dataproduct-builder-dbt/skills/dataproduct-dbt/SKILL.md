@@ -178,7 +178,7 @@ Then proceed.
 
 ### Step 0 — Pre-checks
 
-- Confirm `dbt --version` is on PATH. If not, stop and tell the user to install the adapter for their warehouse.
+- Confirm `uv run --quiet dbt --version` succeeds from the project root. If it fails, run `uv sync` and retry; if still missing, stop and tell the user to add the dbt adapter for their warehouse to `pyproject.toml`'s `[dependency-groups].dev` (e.g. `dbt-snowflake`, `dbt-databricks`) and re-run `uv sync`. Use `uv run dbt …` for every dbt CLI invocation in this skill.
 - Confirm `dbt_project.yml` exists at the working directory root. If not, route to `dataproduct-bootstrap`.
 - Confirm the four model directories exist (`input_ports/`, `staging/`, `intermediate/`, `output_ports/v1/`). If any are missing, route to `dataproduct-bootstrap` or `entropy-data-sync` (whichever the user prefers) and stop.
 

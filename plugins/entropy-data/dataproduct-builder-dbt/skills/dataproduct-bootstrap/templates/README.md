@@ -4,11 +4,13 @@ dbt data product `{{DATA_PRODUCT_ID}}`. Published to [Entropy Data](https://entr
 
 ## Install
 
+Project Python deps (dbt, the `{{DBT_ADAPTER}}` adapter, `openlineage-dbt`, `datacontract`, `entropy-data`):
+
 ```bash
-uv venv
-source .venv/bin/activate
-uv pip install dbt-core {{DBT_ADAPTER}} openlineage-dbt datacontract-cli entropy-data
+uv sync
 ```
+
+`uv sync` creates `.venv/` with everything from `pyproject.toml`'s `[dependency-groups].dev`. All invocations below use the venv via `uv run` — no activation needed.
 
 ## Configure
 
@@ -23,9 +25,8 @@ export OPENLINEAGE__TRANSPORT__AUTH__APIKEY=<your-entropy-data-api-key>
 ## Run
 
 ```bash
-source .venv/bin/activate
-dbt-ol run
-dbt test
+uv run dbt-ol run
+uv run dbt test
 ```
 
 ## Layout

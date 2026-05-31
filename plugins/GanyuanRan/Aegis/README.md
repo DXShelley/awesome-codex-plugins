@@ -41,19 +41,22 @@ software work. It keeps the useful idea of composable skills, then adds:
 Aegis is useful when agents otherwise start coding before the goal, owner,
 architecture boundary, or verification path is clear.
 
-## Quick Install / Update
+## Quick Install
 
-Whether you are installing or updating Aegis, just give this prompt to your AI
-coding agent:
+Give this prompt to your AI coding agent:
 
 ```text
-Read https://github.com/GanyuanRan/Aegis, identify my current AI coding host, and check whether Aegis is already installed. If it is not installed, install Aegis globally using the correct host guide. If it is already installed, update the installed Aegis method-pack to the latest main branch and repeat any host-specific sync steps. Restart or reload the host if needed, then run complete-install verification from the installed Aegis method-pack root. Do not run the doctor command from the target project directory. First locate `<aegis-method-pack-root>`, then run `cd <aegis-method-pack-root> && python scripts/aegis-doctor.py --write-config --json`. Treat the install or update as complete only if the JSON includes `"ok": true`, `"workspaceSupport": "available"`, and `"configStatus": "configured"`; if the host uses a separate skill discovery directory, also verify it with `--discovery-root <path>`.
+Read https://github.com/GanyuanRan/Aegis, identify my current AI coding host, and install Aegis globally using the correct host guide. Restart or reload the host if needed, then run complete-install verification from the installed Aegis method-pack root. Do not run the doctor command from the target project directory. First locate `<aegis-method-pack-root>`, then run `cd <aegis-method-pack-root> && python scripts/aegis-doctor.py --write-config --json`. Treat the install as complete only if the JSON includes `"ok": true`, `"workspaceSupport": "available"`, and `"configStatus": "configured"`; if the host uses a separate skill discovery directory, also verify it with `--discovery-root <path>`.
 ```
 
+## Updating Aegis
+
 After a complete install has registered the current host, later updates can use
-the explicit skill request `aegis:update`. That path uses the local
-host-scoped registry and updates only the current host by default; updating
-every registered host requires an explicit `--all` request. Aegis does not run
+natural language such as `update Aegis` or the explicit skill request
+`aegis:update`. The agent can route either form through the local update path:
+locate the installed method-pack root, use the host-scoped registry, and call
+`scripts/aegis-update.py` for the current host by default. Updating every
+registered host requires an explicit `--all` request. Aegis does not run
 background automatic updates by default.
 
 ## Before You Use It
@@ -72,20 +75,8 @@ For smoother host-level behavior, use:
 - [Lite global rules](GLOBAL_USER_RULES_LITE.md)
 - [Advanced global rules template](GLOBAL_USER_RULES_TEMPLATE.md)
 
-Activation mode defaults to automatic. Manual mode is available by editing:
-
-```text
-~/.config/aegis/config.toml
-```
-
-Windows:
-
-```text
-%USERPROFILE%\.config\aegis\config.toml
-```
-
-Set `activation_mode = "explicit"` or run this from the installed method-pack
-root:
+Activation mode defaults to automatic. To switch to explicit mode, run this
+from the installed method-pack root:
 
 ```bash
 cd <aegis-method-pack-root>
@@ -114,8 +105,9 @@ Aegis keeps a multi-host, plugin-installable distribution goal.
 | --- | --- | --- |
 | `Codex`, `OpenCode` | Fresh evidence exists for the current method-pack scope | [Codex](docs/README.codex.md), [OpenCode](docs/README.opencode.md) |
 | `Claude Code`, `CodeBuddy`, `DeepSeek-TUI`, `Trae` | Install guides exist; release-level fresh host smoke is still pending | [Claude Code](docs/README.claude-code.md), [CodeBuddy](docs/README.codebuddy.md), [DeepSeek-TUI](docs/README.deepseek-tui.md), [Trae](docs/README.trae.md) |
+| `CC GUI (JetBrains IDEA)` | Structural IDE plugin layer support for Claude Code / OpenAI-GPT provider paths; release-level fresh host smoke is still pending | [CC GUI](docs/README.cc-gui.md) |
 | `Antigravity CLI`, `Antigravity IDE`, `Antigravity App` | Structural targets; release-level fresh host smoke is still pending | [Antigravity](docs/README.antigravity.md) |
-| `OpenClaw`, `Hermes Agent` | Structural `SKILL.md` skill-host adaptations; release-level fresh host smoke is still pending | [OpenClaw](docs/README.openclaw.md), [Hermes Agent](docs/README.hermes-agent.md) |
+| `Pi CLI`, `OpenClaw`, `Hermes Agent` | Structural Agent Skills / `SKILL.md` skill-host adaptations; release-level fresh host smoke is still pending | [Pi CLI](docs/README.pi.md), [OpenClaw](docs/README.openclaw.md), [Hermes Agent](docs/README.hermes-agent.md) |
 | `Gemini CLI` | Transitional compatibility surface while Antigravity support matures | [Compatibility Matrix](docs/current/AEGIS_HOST_COMPATIBILITY_MATRIX_SNAPSHOT.md) |
 
 Read the current host verdict before making support claims:
@@ -128,7 +120,8 @@ Read the current host verdict before making support claims:
 After installation and host restart, use normal development requests. Aegis
 skills should be selected when the task matches the method.
 
-Use a portable goal frame before risky work:
+Use a portable goal frame before risky work. It frames the goal, then continues
+into the routed workflow by default:
 
 ```text
 Aegis goal: Fix the auth refresh bug without rewriting the auth system.

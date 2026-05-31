@@ -37,7 +37,7 @@ Then proceed.
 
 ### Step 0 — Pre-checks
 
-- Confirm `datacontract --version` is on PATH. If not, stop and tell the user to install it (e.g. `uv tool install 'datacontract-cli[all]'`).
+- Confirm `uv run --quiet datacontract --version` succeeds from the project root. If it fails, run `uv sync` (the bootstrap template seeds `datacontract-cli[all]` as a dev dep in `pyproject.toml`) and retry. If `uv sync` still doesn't make it available, stop and tell the user to verify `datacontract-cli[all]` is listed in `pyproject.toml`'s `[dependency-groups].dev`. **Do not propose `uv tool install` here** — per-project venv is the convention.
 - Confirm at least one `*.odcs.yaml` exists under `models/output_ports/**/` or `models/input_ports/`. If not, stop and tell the user there's nothing to test.
 - For each contract that will run, inspect its `servers` block and list the env vars the chosen server type needs (e.g. `DATACONTRACT_SNOWFLAKE_USERNAME` / `..._PASSWORD`, `DATACONTRACT_DATABRICKS_TOKEN`, `DATACONTRACT_BIGQUERY_ACCOUNT_INFO_JSON`). If any are unset, surface the list to the user and ask whether to continue (the CLI will fail-fast on that server) or stop. Do not try to source credentials yourself.
 
@@ -61,7 +61,7 @@ For each contract in `CONTRACTS`:
 For each contract:
 
 ```
-datacontract test <path-to-contract>.odcs.yaml --server <server> --logs
+uv run datacontract test <path-to-contract>.odcs.yaml --server <server> --logs
 ```
 
 Where `<path-to-contract>` is the file resolved in Step 1 — typically `models/output_ports/v<N>/<file>.odcs.yaml` for output contracts, or `models/input_ports/<file>.odcs.yaml` for input contracts. The CLI does not care which directory; the role only matters for how Step 4 reports the result.
@@ -153,14 +153,33 @@ servers:
     schema: orders_latest
 ```
 
-Env vars:
+The `datacontract` CLI does not share auth state with the `databricks` CLI — a token must be supplied explicitly via `DATACONTRACT_DATABRICKS_TOKEN`. When surfacing missing credentials to the user, recommend the OAuth-first path; fall back to PAT only when OAuth isn't available.
+
+**Recommended — short-lived OAuth from the already-authenticated `databricks` CLI:**
+
 ```bash
-export DATACONTRACT_DATABRICKS_TOKEN=dapi...               # required
-export DATACONTRACT_DATABRICKS_HTTP_PATH=/sql/1.0/warehouses/abc123def456
-export DATACONTRACT_DATABRICKS_SERVER_HOSTNAME=adb-...     # only needed if `host` is not in the server block
+export DATACONTRACT_DATABRICKS_TOKEN=$(databricks auth token | jq -r .access_token)
+export DATACONTRACT_DATABRICKS_HTTP_PATH=/sql/1.0/warehouses/<warehouse-id>
 ```
 
-The token is a Databricks personal access token or service-principal OAuth token. Read access on the catalog + schema is enough.
+Token is valid ~1h, the literal value never lands in shell history, and a leaked token expires before most attackers notice — much smaller blast radius than a long-lived PAT.
+
+**Fallback — Personal Access Token** (use when `databricks auth token` isn't available: PAT-only profile, OAuth refresh issue, headless shell):
+
+```bash
+export DATACONTRACT_DATABRICKS_TOKEN=dapi...
+export DATACONTRACT_DATABRICKS_HTTP_PATH=/sql/1.0/warehouses/<warehouse-id>
+```
+
+A PAT is long-lived until rotated. Scope it narrowly (read access to the data product's schema is enough) and avoid putting the `export` in `.bashrc`/`.zshrc` — it persists in shell history.
+
+**CI** — use a service-principal-issued token (M2M OAuth, or an SP-owned PAT), not a personal one, with `SELECT` scoped to the data product's schema. Set as a repository secret named `DATACONTRACT_DATABRICKS_TOKEN`.
+
+Optional env vars:
+
+```bash
+export DATACONTRACT_DATABRICKS_SERVER_HOSTNAME=adb-...     # only needed if `host` is not in the server block
+```
 
 ### Postgres
 

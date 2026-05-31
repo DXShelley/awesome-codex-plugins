@@ -64,7 +64,7 @@ Do NOT proceed past Phase 0 if GATE_CLOSED. There is no bypass. Refer to `skills
 
 > Skip silently when `persistence: false` in Session Config.
 
-Before Phase 1, run the parallel-aware preamble per `skills/_shared/parallel-aware-preamble.md`. The preamble detects other active sessions in the worktree-family via `discoverActiveSessions(repoRoot)`, classifies the caller's mode via `classifyMode(callerMode)` against the exclusivity-matrix, and fires the appropriate AUQ on conflict.
+Before Phase 1, run the parallel-aware preamble per `skills/_shared/parallel-aware-preamble.md`. The preamble detects other active sessions in the worktree-family via `findPeers(repoRoot, { mySessionId })`, classifies the caller's mode via `classifyMode(callerMode)` against the exclusivity-matrix, and fires the appropriate AUQ on conflict.
 
 **Outcome handling:**
 - `PASS_THROUGH` → continue to Phase 1
@@ -433,10 +433,14 @@ const result = await runQualityGateWithRetry({
 
 ### Anti-pattern (BE-012 awareness)
 
-The fixer-agent prompt MUST include a reminder of `.claude/rules/test-quality.md`
+The fixer-agent prompt MUST include a reminder of `.claude/rules/testing.md` § "Test Quality — False-Positive Prevention"
 "test-the-mock" anti-pattern. A fix that makes tests green by mocking out the
 real failure is a regression vector. The fixer prompt should explicitly say:
 "Do NOT change test mocks to make tests pass. Fix the actual code defect."
+
+### Heartbeat cadence at inter-wave checkpoints (#590-3)
+
+After each quality-gate PASS, the coordinator refreshes the session-lock heartbeat via the post-wave STATE.md step. See `wave-loop.md § 3a. Post-Wave: Update STATE.md` — step 5 contains the `updateHeartbeat` instruction and best-effort framing. The `sessionId` passed to `updateHeartbeat` is the session identifier established by session-start Phase 1.2 `acquire()` and stored in `.orchestrator/session.lock` (its `session_id` field); it matches the STATE.md frontmatter `session:` field written during Pre-Wave 1b initialization.
 
 ## Frontmatter-Guard (#328)
 

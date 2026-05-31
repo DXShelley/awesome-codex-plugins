@@ -30,7 +30,7 @@ Then proceed.
 
 - Confirm `dbt_project.yml` exists at the working directory root.
 - Confirm there is at least one output-port ODCS file under `models/output_ports/`.
-- Confirm `entropy-data` CLI is on PATH (`entropy-data --version`). If not, surface the install line from the README and stop.
+- Confirm `uv run --quiet entropy-data --version` succeeds from the project root. If it fails, run `uv sync` and retry; if still missing, stop and tell the user to verify `entropy-data` is listed in `pyproject.toml`'s `[dependency-groups].dev`. Use `uv run entropy-data …` for every CLI invocation in this skill.
 - Confirm a non-production dbt profile/target exists (`test`, `dev`, or similar). Inspect `profiles.yml` if accessible; otherwise ask. **Never use a `prod` target in this skill.**
 
 ### Step 1 — Identify the output port

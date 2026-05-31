@@ -285,11 +285,13 @@ bkt repo list --limit 20
 bkt repo list --workspace myteam --limit 10   # Cloud workspace override
 bkt repo view platform-api
 bkt repo create data-pipeline --description "Data ingestion" --project DATA
+bkt repo create frontend-app --workspace myteam --cloud-project WEB
 bkt repo browse --project DATA --repo platform-api
 bkt repo clone platform-api --project DATA --ssh
 ```
 
 `repo list`/`repo view` automatically target the right REST API for your active context: Data Center uses `/rest/api/1.0/projects/{projectKey}/repos`, while Cloud uses `/2.0/repositories/{workspace}`.
+For `repo create`, `--project`, `--forkable`, `--default-branch`, and `--scm` are Data Center flags; `--workspace` and `--cloud-project` are Cloud flags. Host-specific create flags are rejected when they would otherwise be ignored.
 
 ### 4. Pull request workflows
 
@@ -301,9 +303,15 @@ bkt pr checks 42                              # Show build/CI status
 bkt pr checks 42 --wait                       # Wait for builds to complete
 bkt pr checks 42 --wait --timeout 5m          # Wait with timeout
 bkt pr checks 42 --wait --max-interval 1m     # Custom backoff cap
+bkt pr comments 42 --details                  # Review PR comments and thread IDs
+bkt pr comments resolve 42 1001               # Resolve a top-level comment thread
+bkt pr comments reopen 42 1001                # Reopen a resolved comment thread
+bkt pr comments delete 42 1001                # Delete a PR comment
 ```
 
 The CLI wraps Bitbucket pull-request endpoints for creation, listing, review, and merge operations. The `checks` command displays build status with color-coded output (green for success, red for failure, yellow for in-progress) and supports polling until all builds complete. Polling uses exponential backoff with jitter to avoid overwhelming the API during long builds.
+For comment thread state changes, pass the top-level thread comment ID; replies
+cannot be resolved or reopened directly.
 
 ### 5. Issue tracking (Bitbucket Cloud only)
 

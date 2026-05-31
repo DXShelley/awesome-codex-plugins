@@ -85,7 +85,7 @@ Use repo-local agent instructions, least-privilege tool access, protected-path r
 - Make recommendations actionable with protected paths, allowed actions, required verification, user confirmations, and fallback rules where relevant.
 - Name the details to inspect, such as agent instructions, diffs, test output, sensitive-data boundary checks, dependency rationale, and confirmation records; do not state details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
-- Stay inside AI-assisted development controls. Use deployed LLM security or eval-harness skills only when that surface is the central risk.
+- Stay inside AI-assisted development controls. Use deployed LLM security or model-evaluation guidance only when that surface is the central risk.
 - Be concise: prefer enforceable repo rules and checks over broad AI statements.
 
 ## Required Outputs
@@ -112,7 +112,7 @@ Use repo-local agent instructions, least-privilege tool access, protected-path r
 - The agent rewrites unrelated files without explicit user confirmation.
 - Sensitive logs, secrets, or user data are pasted into prompts unnecessarily.
 - New dependencies appear with no rationale, update path, or removal plan.
-- Verification is described but not actually run.
+- Verification is described but not run.
 
 ## Common Mistakes
 

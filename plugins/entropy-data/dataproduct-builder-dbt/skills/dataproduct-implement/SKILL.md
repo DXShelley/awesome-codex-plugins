@@ -37,8 +37,8 @@ Then proceed.
 ### Step 0 — Pre-checks
 
 - Confirm `dbt_project.yml` exists at the working directory root. If not, ask whether to run `dataproduct-bootstrap` first, then stop.
-- Confirm `dbt --version` is on PATH. If not, stop and tell the user to install the dbt adapter for their warehouse (e.g. `uv tool install dbt-snowflake`, `uv tool install dbt-databricks`, `uv tool install dbt-bigquery`, `uv tool install dbt-postgres`).
-- Confirm `entropy-data --version` is on PATH (install with `uv tool install entropy-data` if not) and `entropy-data connection test` succeeds. If the test fails, stop and tell the user to run `entropy-data connection add <name> --host <host> --api-key <key>`.
+- Confirm `uv run --quiet dbt --version` succeeds from the project root. If it fails, run `uv sync` and retry; if still missing, stop and tell the user to add the dbt adapter for their warehouse to `pyproject.toml`'s `[dependency-groups].dev` (e.g. `dbt-snowflake`, `dbt-databricks`, `dbt-bigquery`, `dbt-postgres`) and re-run `uv sync`. Use `uv run dbt …` for every dbt CLI invocation in this skill.
+- Confirm `uv run --quiet entropy-data --version` succeeds from the project root. If it fails, run `uv sync` and retry. Once available, run `uv run entropy-data connection test`. If that fails, stop and tell the user to run `uv run entropy-data connection add <name> --host <host> --api-key <key>`. Use `uv run entropy-data …` for every CLI invocation in this skill.
 
 ### Step 1 — Resolve the data product
 

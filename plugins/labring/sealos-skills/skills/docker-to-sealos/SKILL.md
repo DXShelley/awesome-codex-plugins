@@ -69,6 +69,7 @@ Apply field-level mappings from `references/conversion-mappings.md`, including:
 
 ### Step 5: Apply database strategy
 
+- Database services must be generated as KubeBlocks `Cluster` resources. Do not convert PostgreSQL/MySQL/MongoDB/Redis/Kafka Compose database services into raw Kubernetes `Deployment` or `StatefulSet` workloads.
 - PostgreSQL must follow the pinned version and structure requirements.
 - MySQL/MongoDB/Redis/Kafka must use templates and secret naming from `references/database-templates.md`.
 - Add DB init Job/initContainer when application database bootstrap requires it.
@@ -139,7 +140,7 @@ If validation fails, fix template/rules/examples first.
 - Avoid floating tags (for example `:v2`, `:2.1`, `:stable`); use an explicit version tag or digest.
 - Managed workload image references must be concrete and must not contain Compose-style variable expressions (for example `${VAR}`, `${VAR:-default}`); resolve to explicit tag or digest before emitting template artifacts.
 - Application `originImageName` must match container image.
-- Managed app workloads must reference the app-scoped image pull Secret `${{ defaults.app_name }}` via `template.spec.imagePullSecrets`.
+- Public-image managed app workloads must omit `template.spec.imagePullSecrets`; private-registry workloads may reference only the app-scoped pull Secret `${{ defaults.app_name }}`.
 - The registry pull Secret is runtime-managed by `sealos-deploy` using local `gh` CLI credentials for private GHCR images; do not expose raw registry credential inputs in generated templates.
 - All containers must explicitly set `imagePullPolicy: IfNotPresent`.
 
@@ -155,7 +156,7 @@ If validation fails, fix template/rules/examples first.
 - Non-database sensitive values/inputs use direct `env[].value`.
 - Business containers must source database connection fields (`endpoint`, `host`, `port`, `username`, `password`) from approved Kubeblocks database secrets via `env[].valueFrom.secretKeyRef`; exception: Redis `host`/`port` may use Sealos Redis Service FQDN and `6379` when the Redis secret only exposes credentials, and MongoDB connection URLs may use the Sealos MongoDB Service FQDN plus `27017` when the MongoDB secret exposes credentials only.
 - Business containers must not use custom env/volume `Secret` references except approved Kubeblocks database secrets and object storage secrets.
-- A dedicated app-scoped registry pull Secret is allowed and should be referenced only through `template.spec.imagePullSecrets`.
+- A dedicated app-scoped registry pull Secret is allowed only for private-registry images and must be referenced only through `template.spec.imagePullSecrets`; public images must not add pull secrets.
 - Database connection/bootstrap may use Kubeblocks-provided secrets, and reserved Kubeblocks database secret names must not be redefined by custom `Secret` resources.
 - Env vars must be declared before referenced (for example password before URL composition).
 - Follow official app env var naming; do not invent prefixes.
@@ -164,6 +165,7 @@ If validation fails, fix template/rules/examples first.
 
 ### Database-specific constraints
 
+- Database services must use KubeBlocks `Cluster` resources, not application `Deployment` or `StatefulSet` workloads. `StatefulSet` is allowed for stateful application components only, never for PostgreSQL/MySQL/MongoDB/Redis/Kafka database services.
 - PostgreSQL version: `postgresql-16.4.0`.
 - PostgreSQL API: `apps.kubeblocks.io/v1alpha1`.
 - PostgreSQL RBAC unified naming: `${{ defaults.app_name }}-pg`.

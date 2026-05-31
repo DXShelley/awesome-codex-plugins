@@ -1,48 +1,60 @@
 # Staff Engineer Mode
 
-[![Release](https://img.shields.io/github/v/release/sirmarkz/staff-engineer-mode?label=release)](./RELEASE-NOTES.md)
+**Production-engineering judgment for AI coding agents.**
 
-**Your AI coding agent ships fast. This makes it ship with judgment.**
-
-Public production-engineering practices, packaged as decision guidance for AI
-coding agents. As agents write material amounts of
-production code, the bottleneck is no longer how fast they write; it is whether
-they reason about what happens when the code runs at 3am. Staff Engineer Mode closes that
-gap before an agent ships code without the reliability, security, operability,
-compatibility, and rollout judgment production systems need.
+Staff Engineer Mode packages public production-engineering practices as decision
+guidance for AI coding agents. As agents write material amounts of production
+code, they need to reason about what happens when that code runs at 3am. The
+router and specialist files add reliability, security, operability,
+compatibility, and rollout checks before code ships.
 
 ## Sources
 
-Staff Engineer Mode distills public engineering practices from AWS Builders' Library,
-Google SRE and Software Engineering at Google, Meta Engineering, Microsoft SDL
-and DevOps guidance, Apple security and privacy docs, Netflix resilience work,
-and technical standards or guidance from NIST, CISA, OWASP, OpenSSF, IETF, and
-W3C into practical guidance for AI coding agents. See the
-[source index](skills/_shared/references/source-index.md) for references. Staff
-Engineer Mode is independent and is not endorsed by or affiliated with those
-organizations.
+Staff Engineer Mode distills public engineering practices into practical guidance
+for AI coding agents. Representative source families include AWS Builders'
+Library, Google SRE and Software Engineering at Google, Meta Engineering,
+Microsoft SDL and DevOps guidance, Apple security and privacy docs, Netflix
+resilience work, and standards or guidance from NIST, CISA, OWASP, OpenSSF,
+IETF, and W3C. See the [source index](skills/_shared/references/source-index.md)
+for the full reference set. Staff Engineer Mode is independent and is not
+endorsed by or affiliated with those organizations.
 
 ## How It Works
 
-Ask a normal engineering question. Hand the agent a task, design, diff, incident, rollout, or maintenance problem. The router reads the work, picks one specialist (occasionally one secondary), reads that specialist file, and returns concrete decisions, risks, checks, owners, supporting details, and next steps. You never name a specialist.
+Ask a normal engineering question. Hand the agent a task, design, diff,
+incident, rollout, or maintenance problem. The router picks one specialist
+(occasionally one secondary), reads that file, and returns concrete decisions,
+risks, checks, owners, supporting details, and next steps. You never name a
+specialist.
 
-Supported tools should list only the native `staff-engineer-mode` router. Specialist files live under `specialists/` and load only after routing.
+Supported tools should list only the native `staff-engineer-mode` router.
+Specialist files live under `specialists/` and load only after routing. The
+router picks one primary specialist by default.
 
-The router refuses to load every plausible specialist. One primary specialist at a time, by default.
-
-See [SAMPLE-PROMPTS.md](SAMPLE-PROMPTS.md) for prompts across every specialist.
+For commits and amends, Staff Engineer Mode calls `agent-pr-review` against
+the exact staged diff. For releases, tags, version bumps, packages, artifacts,
+and promotions, it calls `release-build-reproducibility` and
+`production-readiness-review` together.
 
 ## Installation
 
+Examples labeled "terminal" are run in your shell. Examples labeled "agent
+chat" are typed inside that tool's interactive agent session.
+
 ### Claude Code
 
-Register the marketplace:
+Terminal:
+
+```bash
+claude plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode.git
+claude plugin install staff-engineer-mode@staff-engineer-mode
+```
+
+Agent chat:
 
 ```text
 /plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode.git
 ```
-
-Install the plugin:
 
 ```text
 /plugin install staff-engineer-mode@staff-engineer-mode
@@ -50,29 +62,34 @@ Install the plugin:
 
 ### Codex
 
-Works with Codex CLI and Codex App. Tell Codex:
+Terminal:
 
-```text
-Fetch and follow instructions from https://raw.githubusercontent.com/sirmarkz/staff-engineer-mode/main/.codex/INSTALL.md
+```bash
+codex plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode.git
+codex plugin add staff-engineer-mode@staff-engineer-mode
 ```
 
 ### Cursor
 
-```text
-/add-plugin staff-engineer-mode
+Terminal:
+
+```bash
+git clone https://github.com/sirmarkz/staff-engineer-mode.git ~/.cursor/staff-engineer-mode-src
+mkdir -p ~/.cursor/plugins
+ln -s ~/.cursor/staff-engineer-mode-src ~/.cursor/plugins/staff-engineer-mode
 ```
 
 ### OpenCode
 
-Works with OpenCode. Tell OpenCode:
+Terminal:
 
-```text
-Fetch and follow instructions from https://raw.githubusercontent.com/sirmarkz/staff-engineer-mode/main/.opencode/INSTALL.md
+```bash
+opencode plugin 'staff-engineer-mode@git+https://github.com/sirmarkz/staff-engineer-mode.git'
 ```
 
 ### GitHub Copilot CLI
 
-Register the marketplace:
+Terminal:
 
 ```bash
 copilot plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode.git
@@ -86,6 +103,8 @@ copilot plugin install staff-engineer-mode@staff-engineer-mode
 
 ### Gemini CLI
 
+Terminal:
+
 ```bash
 gemini extensions install https://github.com/sirmarkz/staff-engineer-mode
 ```
@@ -94,11 +113,11 @@ gemini extensions install https://github.com/sirmarkz/staff-engineer-mode
 
 Start a fresh session inside any open repo and ask one of:
 
-- "Before implementing partner webhooks, design the event contract, delivery retries, replay path, and dead-letter handling."
-- "During development of the checkout inventory call, decide timeout, retry, fallback, and duplicate-work safeguards."
-- "Review my last commit and tell me what you would catch in PR review."
+- "Before implementing partner webhooks, design delivery retries, replay, and dead-letter handling."
+- "For a new inventory dependency call, decide timeout, retry, and fallback."
+- "Review my last commit."
 
-The agent should load the router, choose one specialist, and respond with concrete decisions, risks, checks, owners, supporting details, and next steps — not vibes.
+The agent should load the router, choose one specialist, and respond with concrete decisions, risks, checks, owners, supporting details, and next steps.
 
 ## What's Inside
 
@@ -122,10 +141,10 @@ Examples by surface:
 
 ## Contributing
 
-Patches welcome — especially additional practices from authoritative sources: first-party engineering publications, official documentation, standards bodies, peer-reviewed papers, or widely cited practitioner references.
+Patches welcome, especially practices from authoritative sources: first-party engineering publications, official documentation, standards bodies, peer-reviewed papers, or widely cited practitioner references.
 
 New specialist files must be technology-agnostic, cite source-index references, and avoid vendor endorsement. Read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a PR. The voice is enforced.
 
 ## License
 
-MIT — see [LICENSE](LICENSE). The project notice is included there.
+MIT

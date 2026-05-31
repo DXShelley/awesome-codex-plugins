@@ -14,6 +14,7 @@ After running, the directory contains:
 ```
 .
 ├── dbt_project.yml
+├── pyproject.toml
 ├── .gitignore
 ├── README.md
 ├── profiles.yml.example
@@ -57,7 +58,7 @@ Then proceed.
   - **New** — continue to Step 2 with no `DATA_PRODUCT` preloaded.
   - **Existing, id/URL given** — extract the trailing id from a URL, then run `entropy-data dataproducts get <id> -o yaml`. If the lookup succeeds, remember the response as `DATA_PRODUCT` and use it in Step 2. If it returns a not-found error, tell the user and ask whether to (a) try a different id, (b) proceed as new with that id, or (c) abort.
   - **Unsure** — if the user does not know, default to asking for the id anyway and run the lookup. Do not silently assume "new".
-- **CLI prerequisites for the lookup**: `entropy-data --version` must be on PATH and `entropy-data connection test` must succeed. If either fails, surface the error and ask the user whether to (a) fix the CLI and retry, or (b) skip the lookup and proceed as if new. Don't prompt for the API key yourself; tell the user to run `uv tool install entropy-data` and/or `entropy-data connection add <name> --host <host> --api-key <key>`.
+- **CLI prerequisites for the lookup** (bootstrap is the one skill where this is global, not via the project venv — see AGENTS.md § Install pattern. The directory has no `pyproject.toml` yet, so `uv run entropy-data` is unavailable until Step 4 scaffolds the project and the user runs `uv sync`. Subsequent skills use `uv run entropy-data` exclusively.): `entropy-data --version` must be on PATH (install once with `uv tool install entropy-data` if missing) and `entropy-data connection test` must succeed. If either fails, surface the error and ask the user whether to (a) fix the CLI and retry, or (b) skip the lookup and proceed as if new. Don't prompt for the API key yourself; tell the user to run `entropy-data connection add <name> --host <host> --api-key <key>`.
 
 ### Step 2 — Gather parameters
 
@@ -116,6 +117,7 @@ Templates are at `${PLUGIN_ROOT}/skills/dataproduct-bootstrap/templates/`. Copy 
 
 | Template | Destination |
 |---|---|
+| `pyproject.toml` | `pyproject.toml` (substitute `{{DBT_ADAPTER}}` — `dbt-snowflake`, `dbt-databricks`, etc. — so `uv sync` installs the right adapter alongside the other dev deps) |
 | `dbt_project.yml` | `dbt_project.yml` |
 | `.gitignore` | `.gitignore` (merge if one already exists; do not overwrite) |
 | `README.md` | `README.md` (merge or back up if one already exists) |

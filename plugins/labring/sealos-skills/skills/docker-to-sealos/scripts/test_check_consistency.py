@@ -2498,7 +2498,7 @@ class CheckConsistencyTests(unittest.TestCase):
         )
         self.assertFalse(any(item.rule_id in {"R007", "R035"} for item in violations))
 
-    def test_detects_missing_registry_pull_secret_reference(self):
+    def test_allows_public_image_without_image_pull_secrets(self):
         violations = self.run_checker(
             """
             ```yaml
@@ -2522,6 +2522,38 @@ class CheckConsistencyTests(unittest.TestCase):
                   containers:
                     - name: demo
                       image: nginx:1.27.2
+                      imagePullPolicy: IfNotPresent
+            ```
+            """
+        )
+        self.assertFalse(any(item.rule_id == "R035" for item in violations))
+
+    def test_detects_invalid_registry_pull_secret_reference(self):
+        violations = self.run_checker(
+            """
+            ```yaml
+            apiVersion: apps/v1
+            kind: Deployment
+            metadata:
+              name: demo
+              labels:
+                app: demo
+                cloud.sealos.io/app-deploy-manager: demo
+              annotations:
+                originImageName: registry.example.com/private/demo:1.0.0
+            spec:
+              revisionHistoryLimit: 1
+              template:
+                metadata:
+                  labels:
+                    app: demo
+                spec:
+                  automountServiceAccountToken: false
+                  imagePullSecrets:
+                    - name: custom-pull-secret
+                  containers:
+                    - name: demo
+                      image: registry.example.com/private/demo:1.0.0
                       imagePullPolicy: IfNotPresent
             ```
             """
@@ -3064,6 +3096,150 @@ class CheckConsistencyTests(unittest.TestCase):
                 additional_include_paths=["template/demo/index.yaml"],
             )
             self.assertTrue(any(item.rule_id == "R019" for item in violations))
+
+    def test_detects_raw_database_statefulset_in_artifact(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            skill = root / "SKILL.md"
+            refs_dir = root / "references"
+            refs_file = refs_dir / "sample.md"
+            rules_file = refs_dir / "rules-registry.yaml"
+            artifact_file = root / "template" / "demo" / "index.yaml"
+
+            write_file(skill, "# no yaml snippets\n")
+            write_file(refs_file, "# refs\n")
+            write_registry(rules_file)
+            write_file(
+                artifact_file,
+                """
+                apiVersion: apps/v1
+                kind: StatefulSet
+                metadata:
+                  name: demo-postgres
+                  labels:
+                    cloud.sealos.io/app-deploy-manager: demo-postgres
+                spec:
+                  revisionHistoryLimit: 1
+                  template:
+                    spec:
+                      automountServiceAccountToken: false
+                      containers:
+                        - name: demo-postgres
+                          image: postgres:16.4
+                          imagePullPolicy: IfNotPresent
+                  volumeClaimTemplates:
+                    - metadata:
+                        name: data
+                      spec:
+                        resources:
+                          requests:
+                            storage: 1Gi
+                """,
+            )
+
+            violations = CHECKER.run_checks(
+                skill,
+                refs_dir,
+                rules_file,
+                additional_include_paths=["template/demo/index.yaml"],
+            )
+            self.assertTrue(any(item.rule_id == "R039" for item in violations))
+
+    def test_allows_stateful_application_workload_in_artifact(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            skill = root / "SKILL.md"
+            refs_dir = root / "references"
+            refs_file = refs_dir / "sample.md"
+            rules_file = refs_dir / "rules-registry.yaml"
+            artifact_file = root / "template" / "demo" / "index.yaml"
+
+            write_file(skill, "# no yaml snippets\n")
+            write_file(refs_file, "# refs\n")
+            write_registry(rules_file)
+            write_file(
+                artifact_file,
+                """
+                apiVersion: apps/v1
+                kind: StatefulSet
+                metadata:
+                  name: demo-worker
+                  labels:
+                    cloud.sealos.io/app-deploy-manager: demo-worker
+                spec:
+                  revisionHistoryLimit: 1
+                  template:
+                    spec:
+                      automountServiceAccountToken: false
+                      containers:
+                        - name: demo-worker
+                          image: ghcr.io/example/demo-worker:1.2.3
+                          imagePullPolicy: IfNotPresent
+                  volumeClaimTemplates:
+                    - metadata:
+                        name: data
+                      spec:
+                        resources:
+                          requests:
+                            storage: 1Gi
+                """,
+            )
+
+            violations = CHECKER.run_checks(
+                skill,
+                refs_dir,
+                rules_file,
+                additional_include_paths=["template/demo/index.yaml"],
+            )
+            self.assertFalse(any(item.rule_id == "R039" for item in violations))
+
+    def test_allows_database_named_non_database_image_workload(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            skill = root / "SKILL.md"
+            refs_dir = root / "references"
+            refs_file = refs_dir / "sample.md"
+            rules_file = refs_dir / "rules-registry.yaml"
+            artifact_file = root / "template" / "demo" / "index.yaml"
+
+            write_file(skill, "# no yaml snippets\n")
+            write_file(refs_file, "# refs\n")
+            write_registry(rules_file)
+            write_file(
+                artifact_file,
+                """
+                apiVersion: apps/v1
+                kind: StatefulSet
+                metadata:
+                  name: redis-commander
+                  labels:
+                    cloud.sealos.io/app-deploy-manager: redis-commander
+                spec:
+                  revisionHistoryLimit: 1
+                  template:
+                    spec:
+                      automountServiceAccountToken: false
+                      containers:
+                        - name: redis-commander
+                          image: ghcr.io/example/redis-commander-ui:1.2.3
+                          imagePullPolicy: IfNotPresent
+                  volumeClaimTemplates:
+                    - metadata:
+                        name: data
+                      spec:
+                        resources:
+                          requests:
+                            storage: 1Gi
+                """,
+            )
+
+            violations = CHECKER.run_checks(
+                skill,
+                refs_dir,
+                rules_file,
+                additional_include_paths=["template/demo/index.yaml"],
+            )
+            self.assertFalse(any(item.rule_id == "R039" for item in violations))
 
     def test_detects_invalid_managed_workload_resource_ladder(self):
         with tempfile.TemporaryDirectory() as temp_dir:

@@ -188,7 +188,7 @@ Capture stdout as `$GROUNDING_BLOCK`. If empty, dispatch the agent unchanged (le
 
     <original prompt>
 
-The helper emits one `grounding_injected` event per injected file to `.orchestrator/metrics/events.jsonl`. The helper never returns non-zero; any failure (missing jq, missing events.jsonl, unreadable file) results in silent no-op so wave dispatch is never blocked.
+The helper emits one `orchestrator.grounding.injected` event per injected file to `.orchestrator/metrics/events.jsonl` (routed through `scripts/emit-event.mjs` → the canonical `emitEvent()` path). The helper never returns non-zero; any failure (missing jq, missing events.jsonl, unreadable file) results in silent no-op so wave dispatch is never blocked.
 
 **Fallback for agents without explicit file scope:** if the session plan's agent specification does not list a "Files:" scope for an agent, fall back to the wave-level `allowedPaths` (from `wave-scope.json`). If that is also empty, skip injection for that agent.
 
@@ -651,6 +651,19 @@ After each wave completes and before the progress update, update `<state-dir>/ST
    ```
    - [<ISO timestamp>] Wave N: <what changed and why>
    ```
+
+5. **Heartbeat refresh (#590-3)** — after the STATE.md write, refresh the session-lock heartbeat so long-running deep sessions do not let the 4h TTL lapse between waves. Best-effort: a failure must NOT block the wave.
+
+   ```js
+   // Per-wave heartbeat refresh (#590-3) — keeps session.lock fresh during long deep sessions.
+   // sessionId = the session identifier established by session-start Phase 1.2 acquire()
+   //   and stored in .orchestrator/session.lock (session_id field); matches the
+   //   STATE.md frontmatter `session:` field written during Pre-Wave 1b initialization.
+   import { updateHeartbeat } from '../../scripts/lib/session-lock.mjs';
+   updateHeartbeat({ sessionId, repoRoot: process.cwd() });
+   ```
+
+   Skip silently if `persistence: false` in Session Config (no session.lock exists in that mode).
 
 ### 3b. Persona-Gate Hook (#458)
 

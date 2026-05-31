@@ -1,6 +1,6 @@
 ---
 name: release-build-reproducibility
-description: "Use when cutting releases, release trains, release candidates, builds, packaging, artifact identity, or promotion"
+description: "Use when cutting releases, tags, versions, builds, packages, artifact identity, or promotion"
 ---
 
 # Release Engineering And Build Reproducibility
@@ -23,6 +23,7 @@ Release engineering turns source changes into trustworthy artifacts.
 
 - The user asks about build systems, release engineering, release trains, release branches, release candidates, packaging, versioning, or artifact promotion.
 - The user is making a release and needs release-cut steps, branch or candidate handling, versioning, packaging, artifact identity, or promotion checks.
+- The agent is about to create a tag, bump a version, publish a hosted release record, build a release package, publish an artifact, or promote an artifact.
 - Builds are slow, flaky, non-hermetic, non-reproducible, cache-sensitive, or dependent on local developer machines.
 - A release process needs build-once promotion, release cut criteria, release branch policy, or artifact identity.
 - You need to separate build, deploy, and release responsibilities.
@@ -58,6 +59,7 @@ Release engineering turns source changes into trustworthy artifacts.
 8. **Keep main recoverable.** Prefer short-lived topic branches, protected main, and release branches with explicit cherry-pick/backport policy so hotfixes do not disappear from the next release.
 9. **Check releases deliberately.** Keep checks fast and signal-rich; quarantine flaky checks, but do not let flakes silently weaken the release signal.
 10. **Record traceability.** Link artifact, source, build logs, checks, release decision, deployment, and rollback target, including rollback to an older known-good artifact when the harmful change is latent rather than the immediately previous release.
+11. **Pair release cuts with readiness.** For a new release, run `production-readiness-review` before the first release command so ownership, rollback, watch, and operator impact are reviewed alongside build reproducibility.
 
 ## Synthesized Default
 
