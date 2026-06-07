@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://comprono.github.io/antigravity-2-codex-plugin/sitemap.xml
