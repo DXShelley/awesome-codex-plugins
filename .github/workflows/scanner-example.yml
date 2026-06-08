@@ -1,9 +1,6 @@
 name: HOL Plugin Scanner
 on:
-  push:
-    branches: [main, master]
-  pull_request:
-    branches: [main, master]
+  workflow_dispatch:  # Example template — run manually to test standard scanning
 permissions:
   contents: read
   security-events: write
