@@ -210,14 +210,6 @@
       "description": "Reverse of OpenAI's official Claude-hosted plugin: use Claude Code from Codex for reviews, rescue tasks, tracked background jobs, and hook-powered review gates.",
       "icon": "./plugins/sendbird/cc-plugin-codex/assets/icon.png"
     },
-      "policy": {
-        "installation": "AVAILABLE",
-        "authentication": "ON_INSTALL"
-      },
-      "category": "Development & Workflow",
-      "description": "Reverse of OpenAI's official Claude-hosted plugin: use Claude Code from Codex for reviews, rescue tasks, tracked background jobs, and hook-powered review gates.",
-      "icon": "./plugins/sendbird/cc-plugin-codex/assets/cc-small.svg"
-    },
     {
       "name": "claude-code-harness",
       "displayName": "Claude Code Harness",
