@@ -398,12 +398,8 @@ Contributions welcome! Please read the [contribution guidelines](CONTRIBUTING.md
 
 To add a plugin:
 
-1. Fork this repo
-2. Add your entry to the appropriate section following the existing format
-3. Submit a PR
+1. Set up the HOL Plugin Scanner in your plugin repo (see [CONTRIBUTING.md](CONTRIBUTING.md))
+2. Fork this repo and add a single line to the appropriate section in `README.md` (alphabetical order)
+3. Submit a PR with your scanner score and plugin repo URL
 
-**Requirements:**
-
-- Plugin must have a public GitHub repository
-- Must include `.codex-plugin/plugin.json`
-- Must be functional and well-documented
+**You do not need to copy plugin files into this repo.** A generator fetches your bundle from your source repo and regenerates catalog files automatically.
