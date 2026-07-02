@@ -77,12 +77,17 @@ If the input is a Spec Brief, keep the plan scoped to the pinned
 what/why/acceptance and do not expand into a formal design unless new
 architecture, contract, migration, or cross-module uncertainty appears.
 
-Compact output contract before writing the plan: `Plan Basis`,
+Compact output contract before writing the plan: `Aegis Visibility`, `Plan Basis`,
 `BaselineUsageDraft`, `Requirement Ready Check`, `Files`, `Compatibility`,
 `Change Necessity`, `Existence Check`, `Architecture Integrity Lens`,
 `Plan Pressure Test`, `Plan-Time Complexity Check`, `Tasks`, `Risks`, and
 `Retirement`. Expand only where the approved scope, risk, or verification
 surface requires it.
+
+`Aegis Visibility` for this workflow states which owner, contract, retirement,
+compatibility, or verification pressure makes planning useful before execution.
+Use one natural sentence for ordinary plans; reserve structured trace for audit,
+debug, release, long-task review, or explicit user request.
 
 Use a compact `BaselineUsageDraft` whenever the plan depends on specific
 baseline docs or current-authority refs:
@@ -122,8 +127,16 @@ task intent, conversation, or agent inference can be cited as a candidate
 source, but it is not durable requirement authority by itself.
 
 Use a compact `Change Necessity` before task decomposition when the plan would
-endorse non-trivial source edits. This is the "should code change at all?"
-check; it is not a new artifact or a `using-aegis` hot-path expansion.
+endorse any new source-code path or non-trivial source edits. This is the
+"should code change at all?" check; it is not a new artifact or a
+`using-aegis` hot-path expansion.
+
+This is behavior-triggered, not prompt-triggered. If the plan is about to add
+any new source-code path or create non-trivial source-edit tasks, expose a
+natural readback even when the user did not ask for it. A tiny helper, small
+guard, new branch, fallback, adapter, or owner is not exempt. Example: "Code
+necessity check: a non-code path is insufficient because <reason>; the minimum
+change boundary is <owner/files>, so the decision is code-change."
 
 ```text
 Change Necessity:
@@ -138,7 +151,8 @@ If the decision is `no-change`, do not write code-edit tasks. If the decision
 is `docs/config-only`, narrow the plan to that surface. If the decision is
 `needs-clarification`, return to the requirement/spec owner. If the decision is
 `code-change`, carry the minimum boundary into `Files`, task steps, and
-verification.
+verification. Approved requirements do not by themselves prove that a new
+source-code path is necessary.
 
 Use a compact `Existence Check` before task decomposition when a plan would add
 a new owner, skill, artifact, host adapter, fallback, compatibility path,

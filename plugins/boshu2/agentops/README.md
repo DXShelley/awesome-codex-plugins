@@ -14,7 +14,7 @@ Coding agents declare "done" on code that is still wrong. AgentOps catches that.
 
 ## Install
 
-Pick your runtime, then type `/quickstart` in the agent.
+Pick your runtime and install:
 
 ```bash
 # Claude Code
@@ -67,7 +67,7 @@ Recorded as a proof artifact — no verdict, not done.
 ```
 
 <!-- agentops:claim:AOP-CLAIM-README-FIRST-VALIDATED -->
-Already installed? Ask your agent `/quickstart`, or run `/rpi "a small goal"` to take one change through discovery, build, and validation end to end. The evidence lands in `.agents/`.
+Already installed? Try it in three steps: make a small change and commit it, run `ao verify my-first-change`, then read the verdict. A model that had no part in writing the change reviews your commit, prints CONFIRMED or REFUTED, and records the result as a line in `docs/provenance/ledger.jsonl` inside your repo.
 
 ---
 
@@ -79,7 +79,6 @@ Every skill works alone; flows compose them. Full catalog: [docs/SKILLS.md](docs
 
 | Skill | Use it when |
 |---|---|
-| `/quickstart` | you want the fastest setup check and next action |
 | `/research` | you need codebase context and prior learnings before changing code |
 | `/pre-mortem` | you want to pressure-test a plan before building |
 | `/rpi` | you want discovery, build, validation, and bookkeeping in one flow |
@@ -94,13 +93,17 @@ Repo-native control plane behind the skills. Full reference: [CLI commands](cli/
 <!-- agentops:claim:AOP-CLAIM-README-EVOLVE-AUTONOMOUS -->
 
 ```bash
+ao verify                 # independent verdict on your latest change
+ao gate check --fast      # the release gate before you push
+ao provenance show <sha>  # the recorded verdict trail for any commit
+ao done <bead-id>         # close tracked work with its verdict attached
 ao quick-start            # set up AgentOps in a repo
+ao doctor                 # check reviewers, binary, and ledger health
+
+# Experimental (still measuring whether these pay off; see the honest version below):
 ao search "query"         # search history and local knowledge
 ao lookup --query "topic" # retrieve curated learnings
-ao context assemble       # build a task briefing
-ao gate check --fast      # the release gate — verify before you push
 ao compile                # rebuild the corpus
-ao metrics health         # flywheel health
 ```
 
 <!-- agentops:claim:AOP-CLAIM-README-AUTONOMOUS-FLYWHEEL -->
@@ -110,6 +113,8 @@ The whole loop runs in a plain session. No daemon, no scheduler, no cloud. For a
 
 **Proven:** independent verification that records a verdict, and a durable, tamper-evident record of it. A change isn't done until something that didn't write it checks it, and that verdict is bound into the provenance ledger. No verdict, not done.
 
+The receipts are public: [membrane receipts](docs/evidence/membrane-receipts.md) — every number derived straight from the verdict ledger, none hand-written.
+
 **Still measuring:** whether the accumulated corpus makes the next session measurably better. We won't claim it until the numbers say so ([ADR-0004](docs/adr/ADR-0004-corpus-moat-unproven-position-on-the-system.md), [ADR-0011](docs/adr/ADR-0011-escape-corpus-compounding-unproven-structural-starvation.md)).
 
 AgentOps proves the work. It doesn't write the code; your agent still does that, and the cross-checks cost tokens. The `.agents/` folder is plain markdown your agents keep up as they go.
@@ -118,6 +123,6 @@ When the labs ship their own version of this, your `.agents/` folder comes with 
 
 ---
 
-[What 3.0 is](docs/3.0.md) · [docs index](docs/documentation-index.md) · [newcomer guide](docs/newcomer-guide.md) · [architecture](docs/ARCHITECTURE.md) · [FAQ](docs/FAQ.md) · built on the [12-factor doctrine](https://12factoragentops.com).
+[What 3.0 is](docs/3.0.md) · [vs hosted code review](docs/comparisons/vs-hosted-code-review.md) · [docs index](docs/documentation-index.md) · [newcomer guide](docs/newcomer-guide.md) · [architecture](docs/ARCHITECTURE.md) · [FAQ](docs/FAQ.md) · built on the [12-factor doctrine](https://12factoragentops.com).
 
 Contributing: [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) (agents: read [AGENTS.md](AGENTS.md), track work with `br`). License: Apache-2.0.

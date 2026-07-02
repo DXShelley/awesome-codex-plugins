@@ -53,6 +53,11 @@ Exceptions (ask your human partner): throwaway prototypes, generated code, confi
 Before source edits, decide:
 
 ```text
+Aegis Visibility:
+- Why this TDD route is strict, light, or skipped:
+- What RED/GREEN proves:
+- What still needs verification:
+
 TDD Route:
 - Mode: auto | off
 - Decision: strict | light | skipped
@@ -72,6 +77,9 @@ still apply, and risky work may still justify recommending strict TDD.
 If this skill was loaded anyway without an explicit TDD request or a visible
 `TDD Route: strict` marker, exit instead of improvising an automatic strict
 route from risk words alone.
+
+Keep `Aegis Visibility` task-specific: explain the route decision and the
+regression boundary, not a generic claim that TDD was used.
 
 ## Preflight Gate
 
@@ -98,8 +106,17 @@ evidence are already clear.
 ## Change Necessity
 
 Before strict RED/GREEN enters production code edits, make the code-change
-decision visible. This is the "should code change at all?" check; it is not a
-new artifact and does not belong in the `using-aegis` hot path.
+decision visible. Any new source-code path needs this check before RED/GREEN
+normalizes it as work to implement. This is the "should code change at all?"
+check; it is not a new artifact and does not belong in the `using-aegis` hot
+path.
+
+This is behavior-triggered, not prompt-triggered. If strict TDD is about to add
+any new source-code path or enter production source edits, expose a natural
+readback even when the user did not ask for it. A tiny helper, small guard, new
+branch, fallback, adapter, or owner is not exempt. Example: "Code necessity
+check: a non-code path is insufficient because <reason>; the minimum change
+boundary is <owner/files>, so the decision is code-change."
 
 ```text
 Change Necessity:

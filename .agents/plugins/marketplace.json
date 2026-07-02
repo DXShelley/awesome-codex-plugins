@@ -227,6 +227,21 @@
       "icon": "./plugins/armoriq/armorCodex/assets/armoriq-logo.png"
     },
     {
+      "name": "babok_analyst",
+      "displayName": "BABOK Analyst",
+      "source": {
+        "source": "local",
+        "path": "./plugins/GSkuza/BABOK_ANALYST"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Development & Workflow",
+      "description": "BABOK v3 business analysis agent with 16 MCP tools, a 9-stage pipeline, and human-in-the-loop approval gates.",
+      "icon": "./plugins/GSkuza/BABOK_ANALYST/assets/icon.svg"
+    },
+    {
       "name": "boss",
       "displayName": "Boss",
       "source": {
@@ -639,6 +654,21 @@
       "icon": "./plugins/yimwoo/hotl-plugin/docs/assets/codex/hotl-icon.png"
     },
     {
+      "name": "krypton",
+      "displayName": "Krypton",
+      "source": {
+        "source": "local",
+        "path": "./plugins/jturntdev/krypton"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Development & Workflow",
+      "description": "Goal-based planning and proof gate for Codex and Claude Code that turns requests into ownership, cutover, review-gate, and acceptance-evidence plans.",
+      "icon": "./plugins/jturntdev/krypton/assets/icon.svg"
+    },
+    {
       "name": "llm-transpile",
       "displayName": "LLM Transpile",
       "source": {
@@ -712,6 +742,21 @@
       "category": "Development & Workflow",
       "description": "Turn an idea into a structured project workflow with planning, execution, verification, and handoff.",
       "icon": "./plugins/AlexMi64/codex-project-autopilot/assets/autonomous-project-agent.svg"
+    },
+    {
+      "name": "rag-reviewer",
+      "displayName": "RAG Reviewer",
+      "source": {
+        "source": "local",
+        "path": "./plugins/mimfort/rag_for_git"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Development & Workflow",
+      "description": "Agentic PR review: hybrid RAG + code graph via MCP, review skills for Codex.",
+      "icon": "./plugins/mimfort/rag_for_git/assets/icon.svg"
     },
     {
       "name": "registry-broker-codex-plugin",
@@ -1198,6 +1243,21 @@
       "description": "Local Apple Calendar and Reminders tooling for macOS with Codex plugin adapters."
     },
     {
+      "name": "autocad-tianzheng-tools",
+      "displayName": "AutoCAD Tianzheng Tools",
+      "source": {
+        "source": "local",
+        "path": "./plugins/summer521521/AutoCAD_Tianzheng_plugin"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Tools & Integrations",
+      "description": "Connects Codex to AutoCAD and Tianzheng HVAC through a local MCP server for DWG-aware HVAC drawing inspection and workflow automation.",
+      "icon": "./plugins/summer521521/AutoCAD_Tianzheng_plugin/assets/icon.svg"
+    },
+    {
       "name": "axonflow",
       "displayName": "AxonFlow",
       "source": {
@@ -1358,6 +1418,21 @@
       "category": "Tools & Integrations",
       "description": "Generate compact first-pass repository briefings for coding agents before deeper exploration.",
       "icon": "./plugins/Rothschildiuk/context-pack/skills/context-pack/assets/context-pack-small.svg"
+    },
+    {
+      "name": "contam-tools",
+      "displayName": "CONTAM Tools",
+      "source": {
+        "source": "local",
+        "path": "./plugins/summer521521/CONTAM_plugin"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Tools & Integrations",
+      "description": "Runs and inspects CONTAM airflow projects through a local MCP server with project guards, diagnostics, simulation helpers, and bridge workflows.",
+      "icon": "./plugins/summer521521/CONTAM_plugin/assets/icon.svg"
     },
     {
       "name": "dataproduct-builder-dbt",
@@ -1580,6 +1655,21 @@
       "icon": "./plugins/mbanderas/costguard/assets/icon.png"
     },
     {
+      "name": "matlab-simulink-tools",
+      "displayName": "MATLAB Simulink Tools",
+      "source": {
+        "source": "local",
+        "path": "./plugins/summer521521/MATLAB_Simulink_plugin"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Tools & Integrations",
+      "description": "Connects Codex to MATLAB and Simulink through a local MCP server for model inspection, script execution, and engineering workflow automation.",
+      "icon": "./plugins/summer521521/MATLAB_Simulink_plugin/assets/icon.svg"
+    },
+    {
       "name": "mobazha",
       "displayName": "Mobazha",
       "source": {
@@ -1638,19 +1728,18 @@
       "icon": "./plugins/ndycode/oc-chatgpt-multi-auth/assets/icon.svg"
     },
     {
-      "name": "openproject",
-      "displayName": "OpenProject",
+      "name": "openproject-codex",
+      "displayName": "OpenProject Codex",
       "source": {
         "source": "local",
-        "path": "./plugins/varaprasadreddy9676/team-codex-plugins"
+        "path": "./plugins/varaprasadreddy9676/openproject-codex-plugin"
       },
       "policy": {
         "installation": "AVAILABLE",
         "authentication": "ON_INSTALL"
       },
       "category": "Tools & Integrations",
-      "description": "Team collaboration via OpenProject integration.",
-      "icon": "./plugins/varaprasadreddy9676/team-codex-plugins/assets/openproject-icon.svg"
+      "description": "OpenProject integration for Codex with project, team, work package, bulk workflow, boards, wiki, meeting, attachment, and reporting support."
     },
     {
       "name": "ophis",
@@ -1975,6 +2064,21 @@
       "category": "Tools & Integrations",
       "description": "GitHub-ready Codex plugin bundle for Yandex Direct, Wordstat, Metrika, and Roistat.",
       "icon": "./plugins/nebelov/yandex-direct-for-all/assets/icon.png"
+    },
+    {
+      "name": "zotero-research-tools",
+      "displayName": "Zotero Research Tools",
+      "source": {
+        "source": "local",
+        "path": "./plugins/summer521521/Zotero_Research_plugin"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Tools & Integrations",
+      "description": "Connects Codex to Zotero Desktop for local-library search, citation export, collection and tag inspection, and research workflow support.",
+      "icon": "./plugins/summer521521/Zotero_Research_plugin/assets/icon.svg"
     }
   ]
 }

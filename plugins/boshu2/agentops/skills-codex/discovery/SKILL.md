@@ -121,7 +121,7 @@ the DAG step is STEP 3.5 in [`references/dag.md`](references/dag.md).
 2. Winnow those into one `SynthesisPacket` (selected plan, rejected alternatives,
    rationale, open questions, risks).
 3. Run the cross-family DUEL: two distinct-family judge panes (e.g. Claude + Codex
-   via [`dual-pane-atm`](../dual-pane-atm/SKILL.md), `--no-user`, fresh-context by
+   via [`using-atm`](../using-atm/SKILL.md), `--no-user`, fresh-context by
    construction) each write one judge verdict to `.agents/duel/<run-id>/`.
 4. Decide deterministically — never read the panes yourself:
    `ao plan-pawl decide --dir .agents/duel/<run-id> --round <N> --max-rounds <duel-rounds>`.
@@ -135,7 +135,7 @@ the DAG step is STEP 3.5 in [`references/dag.md`](references/dag.md).
 
 Approval evidence must survive the worktree: before the gated bead/epic closes, mirror
 the council/duel artifacts (or a compact proof packet) to a tracked durable surface
-(see [`codex-approval`](../codex-approval/SKILL.md)) — `.agents/` in a temp worktree is ignored.
+(see [`codex-exec`](../codex-exec/SKILL.md)) — `.agents/` in a temp worktree is ignored.
 
 ## Open-Ended Path (generate-winnow → operationalize → refine)
 
@@ -222,5 +222,4 @@ Read `references/troubleshooting.md` for common problems and solutions.
 - [references/troubleshooting.md](references/troubleshooting.md) — common problems and solutions
 - [references/output-templates.md](references/output-templates.md) — execution packet and phase summary formats
 - [references/phase-data-contracts.md](references/phase-data-contracts.md) — phase artifact data contracts (cited from references/isolation-contract.md)
-
 **See also:** [research](../research/SKILL.md), [plan](../plan/SKILL.md), [pre-mortem](../pre-mortem/SKILL.md), [crank](../crank/SKILL.md), [rpi](../rpi/SKILL.md), [scaffold](../scaffold/SKILL.md)
