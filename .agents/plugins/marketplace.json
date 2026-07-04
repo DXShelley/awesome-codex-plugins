@@ -1213,6 +1213,21 @@
       "icon": "./plugins/jerryfane/agentgram/assets/agentgram-logo.svg"
     },
     {
+      "name": "agentguards-codex",
+      "displayName": "AgentGuards",
+      "source": {
+        "source": "local",
+        "path": "./plugins/alelaguard/agentguards-plugins"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Tools & Integrations",
+      "description": "LLM security guardrails for Codex with enforcing hooks and MCP tools: jailbreak and prompt-injection detection, web-content scanning, data-exfiltration blocking, and destructive-command authorization.",
+      "icon": "./plugins/alelaguard/agentguards-plugins/assets/logo.png"
+    },
+    {
       "name": "aient",
       "displayName": "Aient",
       "source": {
@@ -1328,6 +1343,21 @@
       },
       "category": "Tools & Integrations",
       "description": "Build and edit Microsoft Power Apps Canvas Apps using natural language and Canvas Authoring MCP server."
+    },
+    {
+      "name": "carsxe",
+      "displayName": "CarsXE",
+      "source": {
+        "source": "local",
+        "path": "./plugins/carsxe/carsxe-codex-plugin"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Tools & Integrations",
+      "description": "Decode VINs, license plates, market value, vehicle history, recalls, liens, OBD codes, and more via the CarsXE API.",
+      "icon": "./plugins/carsxe/carsxe-codex-plugin/assets/logo.png"
     },
     {
       "name": "chrome-devtools",

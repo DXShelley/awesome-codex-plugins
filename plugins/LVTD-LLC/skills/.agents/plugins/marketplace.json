@@ -79,6 +79,18 @@
       "category": "Coding"
     },
     {
+      "name": "htmx",
+      "source": {
+        "source": "local",
+        "path": "./plugins/htmx"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_USE"
+      },
+      "category": "Coding"
+    },
+    {
       "name": "nonfiction-book-writing",
       "source": {
         "source": "local",
@@ -113,6 +125,30 @@
         "authentication": "ON_USE"
       },
       "category": "Coding"
+    },
+    {
+      "name": "tdd",
+      "source": {
+        "source": "local",
+        "path": "./plugins/tdd"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_USE"
+      },
+      "category": "Coding"
+    },
+    {
+      "name": "practical-ab-testing",
+      "source": {
+        "source": "local",
+        "path": "./plugins/practical-ab-testing"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_USE"
+      },
+      "category": "Product Management"
     },
     {
       "name": "customer-discovery",

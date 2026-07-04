@@ -2,8 +2,8 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "name": "awesome-codex-plugins",
   "version": "1.0.0",
-  "last_updated": "2026-07-02",
-  "total": 142,
+  "last_updated": "2026-07-04",
+  "total": 144,
   "categories": [
     "Development & Workflow",
     "Tools & Integrations"
@@ -830,6 +830,16 @@
       "install_url": "https://raw.githubusercontent.com/jerryfane/agentgram/HEAD/.codex-plugin/plugin.json"
     },
     {
+      "name": "AgentGuards",
+      "url": "https://github.com/alelaguard/agentguards-plugins",
+      "owner": "alelaguard",
+      "repo": "agentguards-plugins",
+      "description": "LLM security guardrails for Codex with enforcing hooks and MCP tools: jailbreak and prompt-injection detection, web-content scanning, data-exfiltration blocking, and destructive-command authorization.",
+      "category": "Tools & Integrations",
+      "source": "awesome-codex-plugins",
+      "install_url": "https://raw.githubusercontent.com/alelaguard/agentguards-plugins/HEAD/codex/.codex-plugin/plugin.json"
+    },
+    {
       "name": "Aient",
       "url": "https://github.com/aient-ai/aient-codex-plugin",
       "owner": "aient-ai",
@@ -908,6 +918,16 @@
       "category": "Tools & Integrations",
       "source": "awesome-codex-plugins",
       "install_url": "https://raw.githubusercontent.com/Ratnam-Mishra/canvas-apps-plugin-codex/HEAD/.codex-plugin/plugin.json"
+    },
+    {
+      "name": "CarsXE",
+      "url": "https://github.com/carsxe/carsxe-codex-plugin",
+      "owner": "carsxe",
+      "repo": "carsxe-codex-plugin",
+      "description": "Decode VINs, license plates, market value, vehicle history, recalls, liens, OBD codes, and more via the CarsXE API.",
+      "category": "Tools & Integrations",
+      "source": "awesome-codex-plugins",
+      "install_url": "https://raw.githubusercontent.com/carsxe/carsxe-codex-plugin/HEAD/.codex-plugin/plugin.json"
     },
     {
       "name": "Chrome DevTools",

@@ -36,7 +36,7 @@ should change is the waterfall anti-pattern.
 | `--mixed` | Cross-vendor (Claude + Codex), N×2 judges | `$council --mixed` |
 | `--debate` | Adversarial 2-round refinement | `$council --debate`, `$red-team` |
 | `--mode=post-impl` | Code-readiness pipeline (complexity → bug-hunt → council) | `vibe` |
-| `--mode=pre-impl [--target=X]` | Plan/spec validation; target ∈ {scenario,fitness,ratchet,scope,skill,health} | `$pre-mortem`, `$eval-outcomes`, `$goals measure`, `$flywheel`, `$scope`, `$skill-auditor`, `ao doctor` |
+| `--mode=pre-impl [--target=X]` | Plan/spec validation; target ∈ {scenario,fitness,ratchet,scope,skill,health} | `$pre-mortem`, `$eval-outcomes`, `$goals measure`, `$flywheel`, `$scope`, `$heal-skill` (deep audit), `ao doctor` |
 | `--mode=pr` | PR-shape verdict (diff review + acceptance check) | `$review` |
 
 **Mode-budget assertion:** 8 modes. Adding a 9th requires demoting an existing one OR refusing the addition (per Fix-F § continuous CI gate).
@@ -57,7 +57,7 @@ here so no capability is lost:
   self-grade that is stamped as *waived, not independently validated*. Apply the
   [Completion-Claim Kernel](../shared/validation-contract.md#completion-claim-kernel)
   before accepting any DONE/closed/green claim. For epic-scope close-out this mode may
-  delegate to `vibe`, `$post-mortem`, and `$forge` rather than inlining them.
+  delegate to `vibe`, `$post-mortem`, and `$curate --mode=forge` rather than inlining them.
 - **`--mode=pr` (was the pr-validate lane) — submission-readiness checks.** In addition to the
   diff/acceptance verdict, run, in order: (1) **upstream alignment FIRST** (BLOCKING —
   `git rev-list --count HEAD..origin/main`; fail if many commits behind or merge would
@@ -235,7 +235,7 @@ For `--mode=pre-impl` reusable findings: append to `.agents/findings/registry.js
 | fitness | GOALS.md fitness gates | `$goals measure`, `ao goals measure` |
 | ratchet | Brownian Ratchet checkpoint | `$flywheel`, `ao ratchet status` |
 | scope | Frozen-dirs declaration | `$scope` |
-| skill | SKILL.md hygiene + audit | `$skill-auditor`, `$heal-skill` (audit half) |
+| skill | SKILL.md hygiene + audit | `$heal-skill` (heal.sh hygiene + audit.sh deep audit) |
 | health | Repo health probe | `ao doctor` |
 
 Each target has its own inline check rubric until Phase 2 extraction.
@@ -288,6 +288,16 @@ evidence.
 Before dispatching a validator, register intent on the bead graph (update status,
 assign actor). **Two parallel validators on the same bead produce a dedup incident,
 not a cross-family quorum.** Check for an existing actor before spawning.
+
+### Judge lanes carry an explicit write-scope clamp (2026-07-02, showcase kernel R2)
+
+Every judge brief states, verbatim: **"READ-ONLY except writing your single verdict
+file at `<path>`. Do NOT commit, push, or run tracker/infra ops (git push, br/bd,
+dolt)."** The clamp is role-scoped, not model-scoped — crank workers legitimately
+hold broad write scopes; judges re-measure, they never mutate. Proven live: an
+unclamped codex acceptance judge pushed the feature branch unprompted and attempted
+`bd dolt push` twice mid-judgment. A judge that mutates while judging can corrupt
+the artifact under judgment or preempt the pawl.
 
 ### Judges re-measure; they do not read (card 8)
 
