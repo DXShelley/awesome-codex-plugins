@@ -34,7 +34,10 @@
 - [Plugin Development](#plugin-development)
 - [Guides & Articles](#guides--articles)
 - [Related Projects](#related-projects)
-
+- [Claim Your Plugin](#claim-your-plugin)
+- [Plugin Trust Scores](#plugin-trust-scores)
+- [Plugin Quality](#plugin-quality)
+- [Contributing](#contributing)
 ---
 
 ## Start Here
@@ -383,6 +386,21 @@ The score is best used as a quick trust signal and triage summary (not the only 
 - [EchoCoding](https://github.com/launsion-boop/EchoCoding) - Voice-enabled audio layer for coding agents with ambient soundscapes, event-driven SFX, and optional cloud TTS/ASR interaction.
 - [Emdash Skills](https://github.com/megabytespace/claude-skills) - 14-category autonomous product-building OS for AI coding tools with 94 reference docs, 18 agents, and cross-tool support (Claude Code, Codex, Cursor, Copilot, 30+ more).
 - [HOL Plugin Registry](https://hol.org/registry/plugins) - Browse plugins with scanner-backed security analysis and trust scores.
+
+## Claim Your Plugin
+
+Verify ownership of your plugin on the [HOL Plugin Registry](https://hol.org/registry/plugins) to display a verified badge on your listing.
+
+### How to claim
+
+1. Go to [hol.org/guard/plugins](https://hol.org/guard/plugins) and sign in with GitHub
+2. Find your plugin in the list and click **Verify Ownership**
+3. Authorize the read-only GitHub connection (view your profile, email, and public org membership — no write access)
+4. Once verified, your plugin listing will display a **Verified** badge
+
+That's it. The verification confirms you are the repository owner or an organization admin. Plugins owned by organizations may require additional review.
+
+> **Note:** You only need to verify once per plugin. If your verification needs to be reset, contact support at `support@hol.org`.
 
 ## Plugin Trust Scores
 
