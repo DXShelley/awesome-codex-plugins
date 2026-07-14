@@ -26,10 +26,6 @@
 
 <br>
 
-## 本项目支持
-
-如果本项目对你有帮助，欢迎通过[项目支持页](https://macosx.kooldns.cn/support/awesome-codex-plugins/)支持后续维护与迭代。
-
 ## Contents
 
 - [Start Here](#start-here)
